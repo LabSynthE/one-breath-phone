@@ -26,10 +26,9 @@ app = Flask(__name__)
 def welcome():
 	resp=VoiceResponse()
 	# record a welcome
-	resp.say("...")
-	with resp.gather(numDigits=1, action="/choice"):
-		gather.play("https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3")
-	
+	gather = Gather(num_digits=1, action="/choice")
+	gather.play("https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3")
+	resp.append(gather)
 	resp.redirect('/choice')
 	return str(resp)
 
