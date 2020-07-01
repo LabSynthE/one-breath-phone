@@ -29,7 +29,7 @@ import random
 ### editions...?
 
 # replace this with a function that automagically draws an approved message from an index of approved messages
-recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3"]
+recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-04-20-solomon.mp3"]
 
 app = Flask(__name__)
 
@@ -198,7 +198,7 @@ def listenChoice():
 @app.route("/aboutus",methods=['GET','POST'])
 def aboutUs():
 	resp=VoiceResponse()
-	resp.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine3rd.mp3")
+	resp.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine.mp3")
 	gather = Gather(num_digits=1, action="/choice")
 	gather.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3")
 	resp.append(gather)
