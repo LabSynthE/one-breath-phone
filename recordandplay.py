@@ -128,7 +128,7 @@ def recordChoice():
 			### ->-> this prevents people from filling our storage - either unintentionally or maliciously
 			### ->-> include a function later to clear logged number once message has been approved or declined
 			gather = Gather(num_digits=1, action="/choice")
-			gather.play("To listen to messages that others have sent, please press 1.  If you're ready to go, please press the star key.")
+			gather.play("https://burgundy-toad-2613.twil.io/assets/LISTENINGTOMESSAGES-elmira.mp3")
 			resp.append(gather)
 		if selected == '2':
 			### they want to re-record
