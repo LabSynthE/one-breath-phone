@@ -26,9 +26,8 @@ app = Flask(__name__)
 def welcome():
 	resp=VoiceResponse()
 	# record a welcome
-	resp.say("Leave a message in which you share your poetic observation or a selection of poetry to describe your experience at or during these uprisings with one caveat: Do so in just one breath.")
-	gather=Gather(num_digits=1, action='/choice')
-	gather.say("To listen to a message, please press 1.  To leave a message, please press 2.  To learn more about who we are, please press 3.")
+	gather = Gather(num_digits=1, action="/choice")
+	gather.play("https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3")
 	resp.append(gather)
 	resp.redirect('/choice')
 	return str(resp)
@@ -65,7 +64,7 @@ def record():
 	### right now, this is structured as b. single recording.
 	###
 	### make sure to include, in recording of prompt, instructions that you can end recording by pressing *
-	resp.say("First, state your first name and location.  Then take in one breath.  Speak your message only in one exhale.  Press the star key when you've finished recording.")
+	resp.play("https://burgundy-toad-2613.twil.io/assets/RECORDING-sabrina.mp3")
 	### record the message - end 
 	resp.record(maxlength=30, finishOnKey="*", trim="do-not-trim", action="/recordReview")
 	### redirect to opportunity to review recording
@@ -94,14 +93,14 @@ def recordReview():
 				log.write("\n")
 			log.close()
 	else:
-		resp.say("We don't seem to have a recording.  This is an error on our part.  We'll do our best to fix it.")
+		resp.play("https://burgundy-toad-2613.twil.io/assets/ERROR-leticia.mp3")
 		pass
 	### play recording
 	### -> retrieve + play recording
 	resp.play(entry["recordFile"])
 	### ask if they are happy with recording, and want to submit (log recording)
 	gather=Gather(num_digits=1, action='/recordChoice')
-	gather.say("To save this message, please press 1.  To re-record your message, please press 2.  To delete your recording and not re-record, please press the star key.")
+	gather.play("https://burgundy-toad-2613.twil.io/assets/REVIEWING-cynthia.mp3")
 	resp.append(gather)
 	return str(resp)
 @app.route("/recordChoice", methods=['GET','POST'])
@@ -127,13 +126,13 @@ def recordChoice():
 			### ->-> this prevents people from filling our storage - either unintentionally or maliciously
 			### ->-> include a function later to clear logged number once message has been approved or declined
 			gather = Gather(num_digits=1, action="/choice")
-			gather.say("To listen to messages that others have sent, please press 1.  If you're ready to go, please press the star key.")
+			gather.play("To listen to messages that others have sent, please press 1.  If you're ready to go, please press the star key.")
 			resp.append(gather)
 		if selected == '2':
 			### they want to re-record
 			### -> delete old recording
 			### RIGHT NOW ALL IT DOES IS NOT LOG THE RECORDING
-			### NOT THE SAME - COULD CAUSE A PROBLEM LATER
+			### NOT THE SAME - WILL CAUSE A PROBLEM LATER
 			### ex. IF I KEEP CALLING AND CHOOSING TO 'RE-RECORD' OVER AND OVER AGAIN FOR A FEW HOURS
 			### ex. I WILL CLOG THE STORAGE OF THE #
 			### FIX THIS
@@ -152,13 +151,15 @@ def recordChoice():
 def listen():
 	resp = VoiceResponse()
 	### find a way to index & retrieve completed recordings
-	resp.say("Press star to hangup.")
+	### for now - referencing one of the recordings someone recorded to the GV
+	resp.play("https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3")
 	gather = Gather(num_digits=1, action="/listenChoice")
-	gather.play("https://olive-wren-8959.twil.io/assets/onlyhaveeyes.mp3")
-	resp.append(gather)
+	### maybe need to re-record this?
 	### offer the option to:
 	### A: listen to more messages
 	### B: record your own message
+	gather.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3")
+	resp.append(gather)
 	return str(resp)
 
 @app.route("/listenChoice", methods=['GET','POST'])
@@ -180,9 +181,9 @@ def listenChoice():
 @app.route("/aboutus",methods=['GET','POST'])
 def aboutUs():
 	resp=VoiceResponse()
-	resp.say("LabSynthE (Laboratory for the Investigation of Synthetic and Electronic Poetry) is a platform for collaboration in the School of Arts, Technology, and Emerging Communication at UT Dallas. We are developing a new edition of our ongoing body of work, One Breath Poem, in which the voice is used to express a poem or poetic phrase with the limitation of speaking in just one “unit,” or a single breath. This edition is a call and response regarding the uprisings in response to police brutality and systemic racism in the summer of 2020.")
-	gather = Gather(num_digits=1, action="/")
-	gather.play("To listen to a message, please press 1.  To record a message, please press 2.  To hangup, please press the star key.")
+	resp.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine3rd.mp3")
+	gather = Gather(num_digits=1, action="/choice")
+	gather.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3")
 	resp.append(gather)
 
 	return str(resp)
