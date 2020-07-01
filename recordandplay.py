@@ -1,16 +1,24 @@
 from flask import Flask, request
 from twilio.twiml.voice_response import VoiceResponse, Gather
+import random
 
-app = Flask(__name__)
-
-### TO DO:
+### DONE:
 ### all .say should become a .play(), referencing a .wav that we will record ourselves
 ### NO robo-voices - only our voices
 ### probably polyphonic, like we did for that one conference that time?
 
+### TO DO:
+### see if working audio is good, if not, normalize audio and reupload to twilio
+### when uploading to twilio - USE SAME FILENAME
+### definitely go through and have gather.play() refer to variables
+### define those variables way up here at the top of the file
+### that way we only have to change those variables, not play and hide and seek in this file
+
+### figured out how to:
+### scale this up beyond a single Flask instance running off of a Mac in my house - 
+
 ### figure out how to:
-### scale this up beyond a single Flask instance running off of a Mac in my house
-### reliably store edited messages 
+### reliably store edited messages - is Twilio working OK for this?
 
 ### build the logic behind 'listen' - how to serve people new messages?
 
@@ -19,6 +27,12 @@ app = Flask(__name__)
 ### should callers be able to navigate the messages?  how? sequential? random access?
 ### do we keep all messages up all the tiem or do we host one or two or three on a semi-regular (daily, weekly?) basis?
 ### editions...?
+
+# replace this with a function that automagically draws an approved message from an index of approved messages
+recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3"]
+
+app = Flask(__name__)
+
 
 ### WHEN YOU FIRST CALL
 
@@ -153,8 +167,9 @@ def recordChoice():
 def listen():
 	resp = VoiceResponse()
 	### find a way to index & retrieve completed recordings
-	### for now - referencing one of the recordings someone recorded to the GV
-	resp.play("https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3")
+	### for now - referencing one of the recordings someone recorded to the GV with a random function
+	listenMessage = random.choice(recordedMessages)
+	resp.play(listenMessage)
 	gather = Gather(num_digits=1, action="/listenChoice")
 	### maybe need to re-record this?
 	### offer the option to:
