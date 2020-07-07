@@ -40,7 +40,7 @@ app = Flask(__name__)
 def welcome():
 	resp=VoiceResponse()
 	# record a welcome
-	gather = Gather(num_digits=1, action="/choice")
+	gather = Gather(num_digits=1, action="/choice", timeout=10)
 	gather.play("https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3")
 	resp.append(gather)
 	resp.redirect('/choice')
@@ -62,7 +62,6 @@ def choice():
 			elif selected == '*':
 				resp.redirect('/goodbye')
 			else:
-				resp.say("I'm sorry, I don't understand.")
 				resp.redirect('/')
 		else:
 			resp.say("I'm sorry, there's an error.")
