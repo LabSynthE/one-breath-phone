@@ -10,9 +10,34 @@ import random
 ### TO DO:
 ### see if working audio is good, if not, normalize audio and reupload to twilio
 ### when uploading to twilio - USE SAME FILENAME
+
 ### definitely go through and have gather.play() refer to variables
 ### define those variables way up here at the top of the file
 ### that way we only have to change those variables, not play and hide and seek in this file
+
+### plays in "/'"
+introFile = "https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3"
+welcomeFile = "https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"
+
+### plays in "/record"
+recordFile = "https://burgundy-toad-2613.twil.io/assets/RECORDING-sabrina.mp3"
+
+# plays in "/recordReview" if no recording is found
+errorFile = "https://burgundy-toad-2613.twil.io/assets/ERROR-leticia.mp3"
+
+#plays in "/recordReview", prompt to save or toss recording
+reviewFile = "https://burgundy-toad-2613.twil.io/assets/REVIEWING-cynthia.mp3"
+
+# plays in "/recordChoice", prompt to listen to messages, record messages, or quit
+choiceFile = "https://burgundy-toad-2613.twil.io/assets/LISTENINGTOMESSAGES-elmira.mp3"
+
+# plays in "/listen", offering option to listen to more messages or record messages
+listenFile = "https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3"
+
+# plays in "/aboutus", as intro to who LabSynthE is
+aboutusFile = "https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine.mp3"
+# plays in "/aboutus", as prompt to make a choice
+aboutchoiceFile = "https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3"
 
 ### figured out how to:
 ### scale this up beyond a single Flask instance running off of a Mac in my house - 
@@ -31,6 +56,11 @@ import random
 # replace this with a function that automagically draws an approved message from an index of approved messages
 recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-04-20-solomon.mp3"]
 
+
+#sets global timeout delay for gathers
+gatherDelay = 10
+
+
 app = Flask(__name__)
 
 
@@ -40,8 +70,9 @@ app = Flask(__name__)
 def welcome():
 	resp=VoiceResponse()
 	# record a welcome
-	gather = Gather(num_digits=1, action="/choice", timeout=10)
-	gather.play("https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3")
+	resp.play(welcomeFile)
+	gather = Gather(num_digits=1, action="/choice", timeout=gatherDelay)
+	gather.play(introFile)
 	resp.append(gather)
 	resp.redirect('/choice')
 	return str(resp)
@@ -79,7 +110,7 @@ def record():
 	### right now, this is structured as b. single recording.
 	###
 	### make sure to include, in recording of prompt, instructions that you can end recording by pressing *
-	resp.play("https://burgundy-toad-2613.twil.io/assets/RECORDING-sabrina.mp3")
+	resp.play(recordFile)
 	### record the message - end 
 	resp.record(maxlength=30, finishOnKey="*", trim="do-not-trim", action="/recordReview")
 	### redirect to opportunity to review recording
@@ -92,7 +123,7 @@ def recordReview():
 	resp=VoiceResponse()
 	entry = {}
 	if 'RecordingUrl' in request.values:
-		entry["recordFile"] = request.values['RecordingUrl']
+		entry["recordTemp"] = request.values['RecordingUrl']
 		entry["callSid"] = request.values['CallSid']
 		entry["recordingSid"] = request.values['RecordingSid']
 		entry["recordingDuration"] = request.values["RecordingDuration"]
@@ -108,16 +139,18 @@ def recordReview():
 				log.write("\n")
 			log.close()
 	else:
-		resp.play("https://burgundy-toad-2613.twil.io/assets/ERROR-leticia.mp3")
+		resp.play(errorFile)
 		pass
 	### play recording
 	### -> retrieve + play recording
-	resp.play(entry["recordFile"])
+	resp.play(entry["recordTemp"])
 	### ask if they are happy with recording, and want to submit (log recording)
-	gather=Gather(num_digits=1, action='/recordChoice')
-	gather.play("https://burgundy-toad-2613.twil.io/assets/REVIEWING-cynthia.mp3")
+	gather=Gather(num_digits=1, action='/recordChoice', timeout=gatherDelay)
+	gather.play(reviewFile)
 	resp.append(gather)
 	return str(resp)
+
+
 @app.route("/recordChoice", methods=['GET','POST'])
 def recordChoice():
 	resp = VoiceResponse()
@@ -140,8 +173,8 @@ def recordChoice():
 				log.close()
 			### ->-> this prevents people from filling our storage - either unintentionally or maliciously
 			### ->-> include a function later to clear logged number once message has been approved or declined
-			gather = Gather(num_digits=1, action="/choice")
-			gather.play("https://burgundy-toad-2613.twil.io/assets/LISTENINGTOMESSAGES-elmira.mp3")
+			gather = Gather(num_digits=1, action="/choice", timeout=gatherDelay)
+			gather.play(choiceFile)
 			resp.append(gather)
 		if selected == '2':
 			### they want to re-record
@@ -160,6 +193,7 @@ def recordChoice():
 			resp.redirect("/goodbye")
 	return str(resp)
 
+
 ### LISTENING
 
 @app.route("/listen", methods=['GET','POST'])
@@ -169,14 +203,15 @@ def listen():
 	### for now - referencing one of the recordings someone recorded to the GV with a random function
 	listenMessage = random.choice(recordedMessages)
 	resp.play(listenMessage)
-	gather = Gather(num_digits=1, action="/listenChoice")
+	gather = Gather(num_digits=1, action="/listenChoice", timeout=gatherDelay)
 	### maybe need to re-record this?
 	### offer the option to:
 	### A: listen to more messages
 	### B: record your own message
-	gather.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3")
+	gather.play(listenFile)
 	resp.append(gather)
 	return str(resp)
+
 
 @app.route("/listenChoice", methods=['GET','POST'])
 def listenChoice():
@@ -197,9 +232,9 @@ def listenChoice():
 @app.route("/aboutus",methods=['GET','POST'])
 def aboutUs():
 	resp=VoiceResponse()
-	resp.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine.mp3")
-	gather = Gather(num_digits=1, action="/choice")
-	gather.play("https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3")
+	resp.play(aboutusFile)
+	gather = Gather(num_digits=1, action="/choice", timeout=gatherDelay)
+	gather.play(aboutchoiceFile)
 	resp.append(gather)
 
 	return str(resp)
