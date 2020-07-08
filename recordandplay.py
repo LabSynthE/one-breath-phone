@@ -128,7 +128,7 @@ def recordReview():
 		entry["recordingSid"] = request.values['RecordingSid']
 		entry["recordingDuration"] = request.values["RecordingDuration"]
 		with open("recording-files.txt","w") as log:
-			log.write(entry["recordFile"])
+			log.write(entry["recordTemp"])
 			log.write(",")
 			log.write(entry["recordingSid"])
 			log.write("\n")
