@@ -1,6 +1,6 @@
 ### plays in "/'"
 introFile = ["https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3"]
-welcomeFile = ["https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"]
+welcomeFile = ["https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav", "https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"]
 
 ### plays in "/record"
 recordFile = ["https://burgundy-toad-2613.twil.io/assets/RECORDING-sabrina.mp3"]
