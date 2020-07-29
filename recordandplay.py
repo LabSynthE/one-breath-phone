@@ -16,6 +16,8 @@ import random
 ### define those variables way up here at the top of the file
 ### that way we only have to change those variables, not play and hide and seek in this file
 
+from playdata import introFile, welcomeFile, recordFile,errorFile,reviewFile,choiceFile,listenFile,aboutusFile,aboutchoiceFile
+
 ### plays in "/'"
 introFile = ["https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3"]
 welcomeFile = ["https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"]
@@ -40,6 +42,7 @@ aboutusFile = ["https://burgundy-toad-2613.twil.io/assets/ABOUTUS-xtine.mp3"]
 # plays in "/aboutus", as prompt to make a choice
 aboutchoiceFile = ["https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp3"]
 
+
 ### figured out how to:
 ### scale this up beyond a single Flask instance running off of a Mac in my house - 
 
@@ -54,9 +57,7 @@ aboutchoiceFile = ["https://burgundy-toad-2613.twil.io/assets/ABOUTUS2-maedeh.mp
 ### do we keep all messages up all the tiem or do we host one or two or three on a semi-regular (daily, weekly?) basis?
 ### editions...?
 
-# replace this with a function that automagically draws an approved message from an index of approved messages
-recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-04-20-solomon.mp3"]
-
+from messagedata import recordedMessages
 
 #sets global timeout delay for gathers
 gatherDelay = 10
