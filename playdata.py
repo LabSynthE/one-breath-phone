@@ -1,6 +1,8 @@
 ### plays in "/'"
 introFile = ["https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-sean.mp3"]
-welcomeFile = ["https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav", "https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"]
+## Old welcome file list for Message for a Revolution: "https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav", "https://burgundy-toad-2613.twil.io/assets/WELCOME-xtine.wav"
+## New welcome file list below for Needful Message; will change after August 6, 2020
+welcomeFile = ["https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-needful-lets.wav", "https://burgundy-toad-2613.twil.io/assets/INTRODUCTION-needful-mumu.wav"]
 
 ### plays in "/record"
 recordFile = ["https://burgundy-toad-2613.twil.io/assets/RECORDING-sabrina.mp3"]
