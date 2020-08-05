@@ -1,4 +1,4 @@
 # replace this with a function that automagically draws an approved message from an index of approved messages
 # Message for a revolution recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/06-07-20-fear-pride-anger.mp3","https://burgundy-toad-2613.twil.io/assets/06-04-20-solomon.mp3"]
 # A Needful Message 
-recordedMessages = ["https://www.twilio.com/console/voice/api/recordings/recording-logs/REe6bc8899cce0b0b8c707f3c5f8c34420/download/wav","https://www.twilio.com/console/voice/api/recordings/recording-logs/REfb217dfd1d29f8fceded3df64212b01c/download/wav", "https://www.twilio.com/console/voice/api/recordings/recording-logs/RE287c0fac580d5212fff1d331904eb265/download/wav"]
+recordedMessages = ["https://burgundy-toad-2613.twil.io/assets/elmira-needful-fact.wav"]
